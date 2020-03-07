@@ -21,8 +21,8 @@ jobs:
         echo $LATEST_TAG
         echo "::set-env name=LATEST_TAG::${LATEST_TAG}"
 
-    - name: checkout ${{ env.LATEST_TAG }}
-      uses: actions/checkout@v1
+    - name: checkout aws-cloudformation/cfn-python-lint:${{ env.LATEST_TAG }}
+      uses: actions/checkout@v2
       with:
         repository: aws-cloudformation/cfn-python-lint
         fetch-depth: 0
