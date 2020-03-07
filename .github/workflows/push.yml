@@ -34,9 +34,22 @@ jobs:
         git config --local user.name "GitHub Action"
         git commit -m "Add changes" -a
 
-    - name: push changes
+    - name: push master
       if: env.LATEST_VER != env.VER
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
 
+    - name: build
+      if: env.LATEST_VER != env.VER
+      run: |
+        echo ${{ env.LATEST_VER }} >latest
+        sed 's/%CFN_LINT_VER%/${{ env.LATEST_VER }}/' Dockerfile.template > Dockerfile
+        git checkout -b v${{ env.LATEST_VER }}
+
+    - name: push branch
+      if: env.LATEST_VER != env.VER
+      uses: ad-m/github-push-action@master
+      with:
+        branch: v${{ env.LATEST_VER }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
