@@ -1,0 +1,33 @@
+name: Push Docker Image
+
+on:
+  push:
+    branches:
+    - master
+    paths-ignore:
+    - '**.md'
+
+jobs:
+  push:
+    runs-on: ubuntu-18.04
+    steps:
+
+
+    - name: Set env
+      run: |
+        LATEST=$(curl -s https://api.github.com/repos/aws-cloudformation/cfn-python-lint/releases | jq -r '.[0].tag_name')
+        echo "::set-env name=LATEST_TAG::${LATEST}"
+
+    - name: checkout latest
+      uses: actions/checkout@v1
+      with:
+        repository: aws-cloudformation/cfn-python-lint
+        fetch-depth: 1
+        ref: ${{ env.LATEST }}
+        path: cfn-lint
+
+    - name: 
+      run: |
+        cd cfn-lint
+        git branch
+
