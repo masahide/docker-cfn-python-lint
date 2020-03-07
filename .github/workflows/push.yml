@@ -15,7 +15,10 @@ jobs:
 
     - name: Set env
       run: |
+        curl -V
+        jq -V
         LATEST=$(curl -s https://api.github.com/repos/aws-cloudformation/cfn-python-lint/releases | jq -r '.[0].tag_name')
+        echo $LATEST
         echo "::set-env name=LATEST_TAG::${LATEST}"
 
     - name: checkout latest
