@@ -17,18 +17,19 @@ jobs:
       run: |
         curl -V
         jq -V
-        LATEST=$(curl -s https://api.github.com/repos/aws-cloudformation/cfn-python-lint/releases | jq -r '.[0].tag_name')
-        echo $LATEST
-        echo "::set-env name=LATEST_TAG::${LATEST}"
-    - name: test
-      run:  echo env ${{ env.LATEST  }}
+        LATEST_TAG=$(curl -s https://api.github.com/repos/aws-cloudformation/cfn-python-lint/releases | jq -r '.[0].tag_name')
+        echo $LATEST_TAG
+        echo "::set-env name=LATEST_TAG::${LATEST_TAG}"
 
-    - name: checkout latest
+    - name: test
+      run:  echo env ${{ env.LATEST_TAG }}
+
+    - name: checkout [${{ env.LATEST_TAG }}]
       uses: actions/checkout@v1
       with:
         repository: aws-cloudformation/cfn-python-lint
         fetch-depth: 0
-        ref: ${{ env.LATEST }}
+        ref: ${{ env.LATEST_TAG }}
         path: cfn-lint
 
     - name: 
