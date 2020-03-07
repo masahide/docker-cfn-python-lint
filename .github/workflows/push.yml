@@ -13,24 +13,31 @@ jobs:
     steps:
 
 
-    - name: Set env
+    - name: checkout
+      uses: actions/checkout@v2
+
+    - name: get latest version
       run: |
         curl -V
         jq -V
-        LATEST_TAG=$(curl -s https://api.github.com/repos/aws-cloudformation/cfn-python-lint/releases | jq -r '.[0].tag_name')
-        echo $LATEST_TAG
-        echo "::set-env name=LATEST_TAG::${LATEST_TAG}"
+        LATEST_VER=$(curl -s https://pypi.org/pypi/cfn-lint/json|jq -r '.releases|to_entries|map({key:.key, date:(.value[]|select(.packagetype=="sdist").upload_time)})|max_by(.date)|.key')
+        echo $LATEST_VER
+        echo "::set-env name=LATEST_VER::${LATEST_VER}"
+        echo "::set-env name=VER::$(cat latest)"
 
-    - name: checkout aws-cloudformation/cfn-python-lint:${{ env.LATEST_TAG }}
-      uses: actions/checkout@v2
-      with:
-        repository: aws-cloudformation/cfn-python-lint
-        fetch-depth: 0
-        ref: ${{ env.LATEST_TAG }}
-        path: cfn-lint
 
-    - name: ls
+    - name: build
+      if "${{ env.LATEST_VER }}" != "${{ VER }}"
       run: |
-        ls -la
-        ls -la cfn-lint
+        echo ${{ env.LATEST_VER }} >latest
+        sed 's/%CFN_LINT_VER%/${{ env.LATEST_VER }}/' Dockerfile.template > Dockerfile
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git commit -m "Add changes" -a
+
+    - name: Push changes
+      if "${{ env.LATEST_VER }}" != "${{ VER }}"
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
 
