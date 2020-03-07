@@ -25,9 +25,8 @@ jobs:
         echo "::set-env name=LATEST_VER::${LATEST_VER}"
         echo "::set-env name=VER::$(cat latest)"
 
-
     - name: build
-      if "${{ env.LATEST_VER }}" != "${{ VER }}"
+      if: "${{ env.LATEST_VER }}" != "${{ VER }}"
       run: |
         echo ${{ env.LATEST_VER }} >latest
         sed 's/%CFN_LINT_VER%/${{ env.LATEST_VER }}/' Dockerfile.template > Dockerfile
@@ -36,7 +35,7 @@ jobs:
         git commit -m "Add changes" -a
 
     - name: Push changes
-      if "${{ env.LATEST_VER }}" != "${{ VER }}"
+      if: "${{ env.LATEST_VER }}" != "${{ VER }}"
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
