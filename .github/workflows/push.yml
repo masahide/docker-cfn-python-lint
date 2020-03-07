@@ -21,7 +21,7 @@ jobs:
         echo $LATEST
         echo "::set-env name=LATEST_TAG::${LATEST}"
     - name: test
-      run:  echo env ${{ ebc.LATEST  }}
+      run:  echo env ${{ env.LATEST  }}
 
     - name: checkout latest
       uses: actions/checkout@v1
