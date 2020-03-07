@@ -32,4 +32,5 @@ jobs:
     - name: ls
       run: |
         ls -la
+        ls -la cfn-lint
 
