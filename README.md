@@ -9,6 +9,8 @@ https://www.docker.com/blog/changes-to-docker-hub-autobuilds/
 
 Effective June 18, 2021, auto-renewals have been suspended due to the discontinuation of Autobuilds in the free version.
 
+https://github.com/adrianmace/docker-cfn-python-lint continues to update using GitHub ContainerRegistry.
+ 
 
 # usage
 
