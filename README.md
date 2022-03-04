@@ -6,6 +6,7 @@ Docker image of [cfn-python-lint](https://hub.docker.com/r/masahide/cfn-python-l
 # Auto-renewals are being suspended.
 
 https://www.docker.com/blog/changes-to-docker-hub-autobuilds/
+
 Effective June 18, 2021, auto-renewals have been suspended due to the discontinuation of Autobuilds in the free version.
 
 
