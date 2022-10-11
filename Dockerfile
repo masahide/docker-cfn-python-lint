@@ -1,6 +1,6 @@
 FROM python:3.8-alpine
 
-RUN pip install --no-cache-dir cfn-lint==0.66.1
+RUN pip install --no-cache-dir cfn-lint==0.67.0
 
 ENTRYPOINT ["cfn-lint"]
 CMD ["--help"]
